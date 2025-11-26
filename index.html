@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Juego de deducción social - Descubre quién es el impostor">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,6 +11,7 @@
     <meta name="apple-mobile-web-app-title" content="Impostor">
     <title>Impostor - Juego de Palabras</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,17 +162,19 @@
     </div>
 
     <script>
-        // Registrar Service Worker para PWA
-        if ('serviceWorker' in navigator) {
+        // Registrar Service Worker solo si está servido por HTTP/HTTPS (no file://)
+        if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
                     .then(registration => {
-                        console.log('Service Worker registrado:', registration);
+                        console.log('✅ Service Worker registrado correctamente');
                     })
                     .catch(error => {
-                        console.log('Error al registrar Service Worker:', error);
+                        console.log('⚠️ No se pudo registrar Service Worker:', error);
                     });
             });
+        } else if (window.location.protocol === 'file:') {
+            console.log('ℹ️ Service Worker deshabilitado: usando file:// - El juego funciona igual, pero no funcionará offline');
         }
     </script>
     <script src="script.js"></script>
