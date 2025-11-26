@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostor - Juego de Palabras</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Pantalla de inicio -->
+        <div id="startScreen" class="screen active">
+            <div class="logo-container">
+                <h1 class="game-title">
+                    <span class="title-impostor">IMPOSTOR</span>
+                    <span class="title-subtitle">Juego de Palabras</span>
+                </h1>
+            </div>
+            <button class="btn btn-primary pulse" onclick="showPlayersScreen()">
+                Comenzar Juego
+            </button>
+        </div>
+
+        <!-- Pantalla de jugadores -->
+        <div id="playersScreen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showStartScreen()">← Volver</button>
+                <h2>Agregar Jugadores</h2>
+            </div>
+            
+            <div class="players-input-section">
+                <div class="input-group">
+                    <input type="text" id="playerNameInput" placeholder="Nombre del jugador" maxlength="20">
+                    <button class="btn btn-add" onclick="addPlayer()">+</button>
+                </div>
+                <p class="helper-text">Mínimo 3 jugadores, máximo 12</p>
+            </div>
+
+            <div class="players-list" id="playersList"></div>
+
+            <button class="btn btn-primary" id="continueToCategory" onclick="showCategoryScreen()" disabled>
+                Continuar →
+            </button>
+        </div>
+
+        <!-- Pantalla de categorías -->
+        <div id="categoryScreen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back" onclick="showPlayersScreen()">← Volver</button>
+                <h2>Selecciona una Categoría</h2>
+            </div>
+
+            <div class="categories-grid" id="categoriesGrid"></div>
+
+            <button class="btn btn-primary" id="startGameBtn" onclick="startGame()" disabled>
+                Iniciar Juego →
+            </button>
+        </div>
+
+        <!-- Pantalla de revelación de roles -->
+        <div id="roleRevealScreen" class="screen">
+            <div class="reveal-container">
+                <h2 class="current-player-name" id="currentPlayerName"></h2>
+                <p class="reveal-instruction">Toca la pantalla para ver tu rol</p>
+                
+                <div class="reveal-card" id="revealCard" onclick="revealRole()">
+                    <div class="card-front">
+                        <div class="card-icon">👁️</div>
+                        <p>Toca aquí</p>
+                    </div>
+                    <div class="card-back" id="cardBack"></div>
+                </div>
+
+                <button class="btn btn-primary" id="nextPlayerBtn" onclick="nextPlayer()" style="display: none;">
+                    Siguiente Jugador →
+                </button>
+                <button class="btn btn-primary" id="startRoundBtn" onclick="startRound()" style="display: none;">
+                    Comenzar Ronda →
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla de juego -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <div class="round-info">
+                    <span class="round-label">Ronda</span>
+                    <span class="round-number" id="roundNumber">1</span>
+                </div>
+                <div class="players-alive">
+                    <span id="aliveCount"></span> jugadores
+                </div>
+            </div>
+
+            <div class="game-content">
+                <div class="turn-info">
+                    <p class="turn-label">Turno de:</p>
+                    <h2 class="current-turn" id="currentTurn"></h2>
+                </div>
+
+                <div class="game-instructions">
+                    <p>🎯 Da una pista de <strong>una sola palabra</strong></p>
+                    <p>🕵️ Los civiles conocen la palabra secreta</p>
+                    <p>🎭 El impostor debe fingir que la conoce</p>
+                </div>
+
+                <button class="btn btn-secondary" onclick="showVoting()">
+                    Ir a Votación
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla de votación -->
+        <div id="votingScreen" class="screen">
+            <div class="screen-header">
+                <h2>¿Quién es el impostor?</h2>
+                <p class="vote-instruction">Selecciona al jugador que crees que es el impostor</p>
+            </div>
+
+            <div class="voting-grid" id="votingGrid"></div>
+
+            <button class="btn btn-primary" id="confirmVoteBtn" onclick="confirmVote()" disabled>
+                Confirmar Voto
+            </button>
+        </div>
+
+        <!-- Pantalla de resultado -->
+        <div id="resultScreen" class="screen">
+            <div class="result-container">
+                <div class="result-icon" id="resultIcon"></div>
+                <h2 class="result-title" id="resultTitle"></h2>
+                <p class="result-message" id="resultMessage"></p>
+                
+                <div class="result-details" id="resultDetails"></div>
+
+                <div class="result-actions">
+                    <button class="btn btn-secondary" onclick="showStartScreen()">
+                        Nuevo Juego
+                    </button>
+                    <button class="btn btn-primary" id="continueGameBtn" onclick="continueGame()" style="display: none;">
+                        Continuar Juego
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
