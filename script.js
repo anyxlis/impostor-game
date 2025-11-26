@@ -199,22 +199,22 @@ function showCategoryScreen() {
 function addPlayer() {
     const input = document.getElementById('playerNameInput');
     const name = input.value.trim();
-    
+
     if (name === '') {
         alert('Por favor ingresa un nombre');
         return;
     }
-    
+
     if (gameState.players.length >= 12) {
         alert('Máximo 12 jugadores');
         return;
     }
-    
+
     if (gameState.players.includes(name)) {
         alert('Ese nombre ya existe');
         return;
     }
-    
+
     gameState.players.push(name);
     input.value = '';
     renderPlayers();
@@ -230,7 +230,7 @@ function removePlayer(index) {
 function renderPlayers() {
     const playersList = document.getElementById('playersList');
     playersList.innerHTML = '';
-    
+
     gameState.players.forEach((player, index) => {
         const playerItem = document.createElement('div');
         playerItem.className = 'player-item';
@@ -252,10 +252,10 @@ function updateContinueButton() {
 }
 
 // Enter key support
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('playerNameInput');
     if (input) {
-        input.addEventListener('keypress', function(e) {
+        input.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 addPlayer();
             }
@@ -267,18 +267,18 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderCategories() {
     const grid = document.getElementById('categoriesGrid');
     grid.innerHTML = '';
-    
+
     Object.keys(categories).forEach((category, index) => {
         const card = document.createElement('div');
         card.className = 'category-card';
         card.style.animationDelay = `${index * 0.05}s`;
-        
+
         const [icon, name] = category.split(' ');
         card.innerHTML = `
             <div class="category-icon">${icon}</div>
             <div class="category-name">${name}</div>
         `;
-        
+
         card.onclick = () => selectCategory(category, card);
         grid.appendChild(card);
     });
@@ -288,7 +288,7 @@ function selectCategory(category, cardElement) {
     document.querySelectorAll('.category-card').forEach(card => {
         card.classList.remove('selected');
     });
-    
+
     cardElement.classList.add('selected');
     gameState.selectedCategory = category;
     document.getElementById('startGameBtn').disabled = false;
@@ -300,7 +300,7 @@ function startGame() {
         alert('Selecciona una categoría');
         return;
     }
-    
+
     const words = categories[gameState.selectedCategory];
     gameState.secretWord = words[Math.floor(Math.random() * words.length)];
     gameState.impostorIndex = Math.floor(Math.random() * gameState.players.length);
@@ -308,7 +308,7 @@ function startGame() {
     gameState.currentPlayerIndex = 0;
     gameState.revealedPlayers = [];
     gameState.eliminatedPlayers = [];
-    
+
     showRoleReveal();
 }
 
@@ -316,25 +316,25 @@ function startGame() {
 function showRoleReveal() {
     const currentPlayer = gameState.players[gameState.currentPlayerIndex];
     document.getElementById('currentPlayerName').textContent = currentPlayer;
-    
+
     const card = document.getElementById('revealCard');
     card.classList.remove('flipped');
-    
+
     document.getElementById('nextPlayerBtn').style.display = 'none';
     document.getElementById('startRoundBtn').style.display = 'none';
-    
+
     showScreen('roleRevealScreen');
 }
 
 function revealRole() {
     const card = document.getElementById('revealCard');
     if (card.classList.contains('flipped')) return;
-    
+
     card.classList.add('flipped');
-    
+
     const cardBack = document.getElementById('cardBack');
     const isImpostor = gameState.currentPlayerIndex === gameState.impostorIndex;
-    
+
     if (isImpostor) {
         cardBack.className = 'card-back impostor';
         cardBack.innerHTML = `
@@ -356,9 +356,9 @@ function revealRole() {
             </div>
         `;
     }
-    
+
     gameState.revealedPlayers.push(gameState.currentPlayerIndex);
-    
+
     if (gameState.revealedPlayers.length < gameState.players.length) {
         setTimeout(() => {
             document.getElementById('nextPlayerBtn').style.display = 'block';
@@ -383,12 +383,12 @@ function startRound() {
 // Pantalla de juego
 function updateGameScreen() {
     document.getElementById('roundNumber').textContent = gameState.roundNumber;
-    
-    const alivePlayers = gameState.players.filter((_, index) => 
+
+    const alivePlayers = gameState.players.filter((_, index) =>
         !gameState.eliminatedPlayers.includes(index)
     );
     document.getElementById('aliveCount').textContent = alivePlayers.length;
-    
+
     const startingPlayerName = gameState.players[gameState.startingPlayer];
     document.getElementById('currentTurn').textContent = startingPlayerName;
 }
@@ -402,24 +402,24 @@ function showVoting() {
 function renderVotingGrid() {
     const grid = document.getElementById('votingGrid');
     grid.innerHTML = '';
-    
+
     gameState.players.forEach((player, index) => {
         const isEliminated = gameState.eliminatedPlayers.includes(index);
-        
+
         const card = document.createElement('div');
         card.className = 'vote-card';
         if (isEliminated) card.classList.add('eliminated');
         card.style.animationDelay = `${index * 0.05}s`;
-        
+
         card.innerHTML = `
             <div class="vote-avatar">${player.charAt(0).toUpperCase()}</div>
             <div class="vote-name">${player}</div>
         `;
-        
+
         if (!isEliminated) {
             card.onclick = () => selectVote(index, card);
         }
-        
+
         grid.appendChild(card);
     });
 }
@@ -428,7 +428,7 @@ function selectVote(playerIndex, cardElement) {
     document.querySelectorAll('.vote-card').forEach(card => {
         card.classList.remove('selected');
     });
-    
+
     cardElement.classList.add('selected');
     gameState.selectedVote = playerIndex;
     document.getElementById('confirmVoteBtn').disabled = false;
@@ -436,19 +436,19 @@ function selectVote(playerIndex, cardElement) {
 
 function confirmVote() {
     if (gameState.selectedVote === null) return;
-    
+
     const votedPlayerIndex = gameState.selectedVote;
     const votedPlayer = gameState.players[votedPlayerIndex];
     const isImpostor = votedPlayerIndex === gameState.impostorIndex;
-    
+
     gameState.eliminatedPlayers.push(votedPlayerIndex);
-    
-    const alivePlayers = gameState.players.filter((_, index) => 
+
+    const alivePlayers = gameState.players.filter((_, index) =>
         !gameState.eliminatedPlayers.includes(index)
     );
-    
+
     const shouldRevealImpostor = alivePlayers.length === 2 && !isImpostor;
-    
+
     showResult(isImpostor, votedPlayer, shouldRevealImpostor);
 }
 
@@ -459,7 +459,7 @@ function showResult(wasImpostor, votedPlayer, revealImpostor = false) {
     const resultMessage = document.getElementById('resultMessage');
     const resultDetails = document.getElementById('resultDetails');
     const continueBtn = document.getElementById('continueGameBtn');
-    
+
     if (wasImpostor) {
         resultIcon.textContent = '🎉';
         resultTitle.textContent = '¡Civiles Ganan!';
@@ -471,10 +471,10 @@ function showResult(wasImpostor, votedPlayer, revealImpostor = false) {
         `;
         continueBtn.style.display = 'none';
     } else {
-        const alivePlayers = gameState.players.filter((_, index) => 
+        const alivePlayers = gameState.players.filter((_, index) =>
             !gameState.eliminatedPlayers.includes(index)
         );
-        
+
         if (revealImpostor) {
             const impostorName = gameState.players[gameState.impostorIndex];
             resultIcon.textContent = '🎭';
@@ -512,20 +512,20 @@ function showResult(wasImpostor, votedPlayer, revealImpostor = false) {
             continueBtn.style.display = 'block';
         }
     }
-    
+
     gameState.selectedVote = null;
     showScreen('resultScreen');
 }
 
 function continueGame() {
     gameState.roundNumber++;
-    
+
     const aliveIndices = gameState.players
         .map((_, index) => index)
         .filter(index => !gameState.eliminatedPlayers.includes(index));
-    
+
     gameState.startingPlayer = aliveIndices[Math.floor(Math.random() * aliveIndices.length)];
-    
+
     updateGameScreen();
     showScreen('gameScreen');
 }

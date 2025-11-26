@@ -1,0 +1,24 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="512" height="512" fill="#0f0f1e" rx="80"/>
+  
+  <!-- Máscara/Ícono de Impostor -->
+  <circle cx="256" cy="180" r="80" fill="url(#grad)"/>
+  
+  <!-- Ojos -->
+  <ellipse cx="236" cy="170" rx="15" ry="25" fill="#0f0f1e"/>
+  <ellipse cx="276" cy="170" rx="15" ry="25" fill="#0f0f1e"/>
+  
+  <!-- Cuerpo -->
+  <path d="M 180 250 Q 180 280 200 300 L 200 420 Q 200 440 220 440 L 240 440 L 240 380 L 272 380 L 272 440 L 292 440 Q 312 440 312 420 L 312 300 Q 332 280 332 250 Z" fill="url(#grad)"/>
+  
+  <!-- Signo de interrogación -->
+  <text x="256" y="240" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#ffffff" text-anchor="middle">?</text>
+</svg>
