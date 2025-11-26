@@ -4,8 +4,7 @@ const urlsToCache = [
     './index.html',
     './styles.css',
     './script.js',
-    './icon-192.png',
-    './icon-512.png',
+    './icon.svg',
     'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap'
 ];
 
